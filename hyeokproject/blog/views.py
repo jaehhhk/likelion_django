@@ -2,11 +2,18 @@
 from django.shortcuts import redirect, render
 from .models import Blog
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
     blogs = Blog.objects
-    return render(request, 'home.html', {'blogs':blogs})
+
+    blog_list = Blog.objects.all()  # 모든 객체 담아라
+    paginator = Paginator(blog_list, 2) # 장고에서 기본 제공 함수, 2개씩 담아 나눠라
+    page = request.GET.get('page')  # 현재 페이지 값
+    posts = paginator.get_page(page)    # 페이지값을 html에 넘겨준다
+
+    return render(request, 'home.html', {'blogs':blogs, 'posts':posts})
 
 def new(request):
     return render(request, 'new.html') # new.html 띄워줌

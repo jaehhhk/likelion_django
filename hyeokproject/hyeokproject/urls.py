@@ -13,18 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from xml.etree.ElementInclude import include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 import blog.views
 #from hyeokproject.blog.views import delete
 
+# 경로에 블로그 없는 것만 남김 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', blog.views.home, name = 'home' ),
-    path('blog/new/', blog.views.new, name='new'),
-    path('blog/create/', blog.views.create, name='create'),
-    path('blog/<int:blog_id>', blog.views.detail, name='detail'), # id 구분-> 패스컨버터
-    path('blog/<int:blog_id>/delete', blog.views.delete, name='delete'),
-    path('blog/<int:blog_id>/edit', blog.views.edit, name='edit'),
-    path('blog/<int:blog_id>/update', blog.views.update, name='update'),
+    path('blog/', include('blog.urls')),
+    path('account/', include('account.urls')),
 ]
